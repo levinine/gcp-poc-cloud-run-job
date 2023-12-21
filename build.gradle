@@ -1,0 +1,36 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.1.1'
+    id 'io.spring.dependency-management' version '1.1.0'
+}
+
+group = 'gcp.poc.cr'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    sourceCompatibility = '17'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter'
+
+    implementation enforcedPlatform('com.google.cloud:libraries-bom:26.18.0')
+
+    implementation 'com.google.cloud:google-cloud-pubsub:1.123.17'
+    implementation 'com.google.cloud:google-cloud-logging-logback:0.130.17-alpha'
+
+    implementation 'org.springframework.boot:spring-boot-starter-actuator:3.1.1'
+}
+
+jar {
+    manifest {
+        attributes(
+                'Main-Class': "gcp.poc.cr.weatherdatapublishr.WeatherDataPublishrApplication",
+                'Class-Path': configurations.runtimeClasspath.collect { "libs/$it.name" }.join(' ')
+        )
+    }
+}
